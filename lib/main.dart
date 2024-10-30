@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 
 import 'features/weather/bloc/weather_bloc.dart';
 import 'features/weather/bloc/weather_bloc_event.dart';
+import 'features/weather/bloc/weather_cubit.dart';
 import 'features/weather/views/weather_view.dart';
 
 void main() async {
@@ -12,6 +13,7 @@ void main() async {
   runApp(const MainApp());
 }
 
+//Cubit
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -23,8 +25,9 @@ class MainApp extends StatelessWidget {
             future: _determinePosition(),
             builder: (context, snap) {
               if (snap.hasData) {
-                return BlocProvider<WeatherBloc>(
-                  create: (context) => WeatherBloc()..add(FetchWeather(snap.data as Position)), // Executes fetch weather directly after making provider
+                final Position position = snap.data as Position;
+                return BlocProvider<WeatherCubit>(
+                  create: (context) => WeatherCubit(position.latitude, position.longitude), // Executes fetch weather directly after making provider
                   child: const WeatherView(),
                 );
               } else {
@@ -37,6 +40,33 @@ class MainApp extends StatelessWidget {
             }));
   }
 }
+
+// Bloc
+// class MainApp extends StatelessWidget {
+//   const MainApp({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         home: FutureBuilder(
+//             future: _determinePosition(),
+//             builder: (context, snap) {
+//               if (snap.hasData) {
+//                 return BlocProvider<WeatherBloc>(
+//                   create: (context) => WeatherBloc()..add(FetchWeather(snap.data as Position)), // Executes fetch weather directly after making provider
+//                   child: const WeatherView(),
+//                 );
+//               } else {
+//                 return const Scaffold(
+//                   body: Center(
+//                     child: CircularProgressIndicator(),
+//                   ),
+//                 );
+//               }
+//             }));
+//   }
+// }
 
 /// Determine the current position of the device.
 ///

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:weatherbloc/features/weather/bloc/weather_cubit.dart';
 import 'package:weatherbloc/features/weather/widgets/weather_detail_day.dart';
 import '../bloc/weather_bloc.dart';
 import '../bloc/weather_bloc_state.dart';
@@ -33,8 +34,8 @@ class _WeatherViewState extends State<WeatherView> {
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
-              ...buildBackgroundGradientBlur(),
-              BlocBuilder<WeatherBloc, WeatherBlocState>(builder: (context, state) {
+              ...buildBackgroundGradientBlur(), // Change to WeatherBloc if u wanna use bloc instead (change in main aswell
+              BlocBuilder<WeatherCubit, WeatherBlocState>(builder: (context, state) {
                 if (state is WeatherBlocSuccess) {
                   return SizedBox(
                     width: MediaQuery.of(context).size.width,
